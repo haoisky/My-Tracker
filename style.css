@@ -1,0 +1,161 @@
+/* Define our custom lofi color palette */
+:root {
+    --dark-green: #344E41;
+    /* Made the accent semi-transparent for glass effect */
+    --dark-accent: rgba(58, 90, 64, 0.75); 
+    --sage-green: #A3B18A;
+    --beige-text: #DAD7CD;
+    --light-beige: #f5f3ef;
+}
+
+/* Using the new fonts */
+body {
+    font-family: 'M PLUS Rounded 1c', sans-serif; /* Calming, rounded font for the body */
+    background-color: var(--dark-green);
+    color: var(--beige-text);
+    /* Added perspective for 3D tilt effect */
+    perspective: 1000px; 
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Fredoka One', cursive; /* Fun, "bold" font for headers */
+    /* Added text shadow */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* 3D Canvas Background */
+#bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Placed behind everything */
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--dark-green);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--sage-green);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #b7c49f;
+}
+
+/* Override Tailwind colors to use our custom palette */
+.bg-dark-green { background-color: var(--dark-green); }
+.bg-dark-accent { background-color: var(--dark-accent); }
+.bg-sage-green { background-color: var(--sage-green); }
+.text-beige-text { color: var(--beige-text); }
+.text-dark-green { color: var(--dark-green); }
+
+/* The "Glass" Card Effect */
+.card {
+    background-color: var(--dark-accent);
+    border-radius: 0.75rem; /* 12px */
+    padding: 1.5rem; /* 24px */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    
+    /* This is the magic for "frosted glass" */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(163, 177, 138, 0.2); /* Faint sage border */
+    
+    /* Added transition for smooth 3D tilt */
+    transition: transform 0.1s ease-out;
+}
+
+.btn {
+    background-color: var(--sage-green);
+    color: var(--dark-green);
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem; /* 8px */
+    transition: all 0.2s ease-in-out;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-weight: 700; /* Bolder */
+}
+.btn:hover {
+    opacity: 0.85;
+}
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.input-field {
+    background-color: var(--beige-text);
+    color: var(--dark-green);
+    border: 2px solid transparent;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    width: 100%;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+.input-field::placeholder {
+    color: #7d7c78;
+}
+.input-field:focus {
+    outline: none;
+    border-color: var(--sage-green);
+}
+
+.progress-bar-bg {
+    background-color: var(--dark-green);
+    border-radius: 9999px;
+    height: 1rem; /* 16px */
+    overflow: hidden;
+    border: 1px solid var(--sage-green);
+}
+.progress-bar-inner {
+    background-color: var(--sage-green);
+    height: 100%;
+    border-radius: 9999px;
+    transition: width 0.3s ease-in-out;
+}
+
+.task-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(0,0,0,0.2); /* More transparent for items */
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+    transition: all 0.2s ease;
+}
+.task-item:hover {
+    background-color: rgba(0,0,0,0.3);
+}
+
+.badge {
+    font-size: 0.75rem; /* 12px */
+    font-weight: 600; /* Bolder */
+    padding: 0.25rem 0.75rem; /* Wider */
+    border-radius: 9999px;
+    text-transform: uppercase;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+
+/* Style for the music button */
+.music-btn {
+    background-color: var(--dark-accent);
+    color: var(--sage-green);
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease-in-out;
+    border: 1px solid var(--sage-green);
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-weight: 700;
+}
+.music-btn:hover {
+    background-color: var(--sage-green);
+    color: var(--dark-green);
+}
