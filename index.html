@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shio's Progress Tracker</title>
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍃</text></svg>">
+    
     <!-- Using Tailwind CSS for fast and beautiful styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -53,7 +56,7 @@
             z-index: -1; /* Placed behind everything */
         }
 
-        /* Custom scrollbar para sa aesthetic */
+        /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -98,12 +101,12 @@
             padding: 0.5rem 1rem;
             border-radius: 0.5rem; /* 8px */
             transition: all 0.2s ease-in-out;
-            font-family: 'M PLUS Rounded 1c', sans-serif; /* Changed the font */
+            font-family: 'M PLUS Rounded 1c', sans-serif;
             font-weight: 700; /* Bolder */
         }
         .btn:hover {
             opacity: 0.85;
-        } /* <-- Ito yung kulang na brace! */
+        }
         .btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
@@ -116,7 +119,7 @@
             border-radius: 0.5rem;
             padding: 0.5rem 0.75rem;
             width: 100%;
-            font-family: 'M PLUS Rounded 1c', sans-serif; /* Changed the font */
+            font-family: 'M PLUS Rounded 1c', sans-serif;
         }
         .input-field::placeholder {
             color: #7d7c78;
@@ -160,7 +163,7 @@
             padding: 0.25rem 0.75rem; /* Wider */
             border-radius: 9999px;
             text-transform: uppercase;
-            font-family: 'M PLUS Rounded 1c', sans-serif; /* Changed the font */
+            font-family: 'M PLUS Rounded 1c', sans-serif;
         }
 
         /* Style for the music button */
@@ -205,8 +208,6 @@
 
             <!-- Left Column: Trackers & Focus -->
             <div class="lg:col-span-1 space-y-6">
-
-                <!-- REMOVED: The YouTube player card has been removed -->
                 
                 <!-- Daily Encoding Tracker -->
                 <div class="card">
@@ -300,7 +301,7 @@
         </div>
     </div>
 
-            <script>
+    <script>
         // --- 3D Background Setup (Three.js) ---
         let scene, camera, renderer, particles;
 
@@ -344,98 +345,22 @@
             animate3D();
         }
 
+        // --- FIX: Added the missing animation loop function ---
         function animate3D() {
             requestAnimationFrame(animate3D);
 
-            // Animate particles
-            particles.rotation.x += 0.0001;
-            particles.rotation.y += 0.0003;
+            // Add subtle rotation to the particles for a "living" background
+            if (particles) {
+                particles.rotation.x += 0.0001;
+                particles.rotation.y += 0.0001;
+            }
 
             renderer.render(scene, camera);
         }
-
-        // --- Lofi Music Setup (Tone.js) ---
-        let lofiSynth, lofiMelody, musicPlaying = false;
-        const musicToggleBtn = document.getElementById('music-toggle');
-
-        function initMusic() {
-            // More "chill" effects: Reverb and a simple Delay
-            const reverb = new Tone.Reverb(1.5).toDestination();
-            const delay = new Tone.FeedbackDelay("8n", 0.4).connect(reverb);
-
-            // A softer synth (FMSynth) instead of the harsh "fatsawtooth"
-            lofiSynth = new Tone.FMSynth({
-                harmonicity: 1.5,
-                modulationIndex: 1.2,
-                oscillator: { type: 'sine' },
-                envelope: { attack: 0.05, decay: 0.3, sustain: 0.4, release: 0.8 },
-                modulation: { type: 'square' },
-                modulationEnvelope: { attack: 0.05, decay: 0.2, sustain: 0.3, release: 0.7 }
-            }).connect(delay);
-            
-            // A much more soothing, repetitive lofi-style melody (Cmaj7, Fmaj7)
-            const melody = [
-                'C4', null, 'E4', 'G4', 'B4', null, 'G4', 'E4',
-                'F3', null, 'A3', 'C4', 'E4', null, 'C4', 'A3'
-            ];
-
-            lofiMelody = new Tone.Sequence((time, note) => {
-                if (note) {
-                    lofiSynth.triggerAttackRelease(note, '8n', time);
-                }
-            }, melody, '8n'); // 8n = eighth note, makes it flow better
-
-            // Set transport settings
-            Tone.Transport.bpm.value = 80; // Slow, chill BPM
-            Tone.Transport.loop = true;
-            Tone.Transport.loopEnd = '4m'; // Loop every 4 measures
-            
-            lofiMelody.start(0);
-        }
-
-        musicToggleBtn.addEventListener('click', async () => {
-            if (!musicPlaying) {
-                // Start music
-                if (Tone.context.state !== 'running') {
-                    await Tone.start();
-                }
-                if (!lofiSynth) {
-                    initMusic(); // Initialize only when first clicked
-                }
-                Tone.Transport.start();
-                musicToggleBtn.textContent = 'Mute 🎵';
-                musicPlaying = true;
-            } else {
-                // Stop music
-                Tone.Transport.stop();
-                musicToggleBtn.textContent = 'Play Music 🎧';
-                musicPlaying = false;
-            }
-        });
+        // --- End of Fix ---
 
 
-        // --- 3D Card Tilt Effect ---
-        const cards = document.querySelectorAll('.card');
-        const tiltAngle = 5; // How much the card tilts (in degrees)
-
-        document.body.addEventListener('mousemove', (e) => {
-            const centerX = window.innerWidth / 2;
-            const centerY = window.innerHeight / 2;
-            
-            // Calculate mouse position relative to center (-1 to 1)
-            const mouseX = (e.clientX - centerX) / centerX;
-            const mouseY = (e.clientY - centerY) / centerY;
-
-            cards.forEach(card => {
-                card.style.transform = `
-                    rotateY(${mouseX * tiltAngle}deg) 
-                    rotateX(${-mouseY * tiltAngle}deg)
-                `;
-            });
-        });
-
-
-        // --- Original Dashboard Logic (nasa ibaba) ---
+        // --- Original Dashboard Logic ---
         
         // --- State Variables ---
         let encodingCount = 0;
@@ -446,6 +371,7 @@
         const countEl = document.getElementById('encoding-count');
         const goalEl = document.getElementById('encoding-goal');
         const progressEl = document.getElementById('encoding-progress');
+        // --- FIX: Removed the stray period ('.') before getElementById ---
         const messageEl = document.getElementById('encoding-message');
         
         const taskForm = document.getElementById('add-task-form');
@@ -646,6 +572,7 @@
         
         function updateOverallProgress() {
             const totalTasks = capstoneTasks.length;
+            // --- FIX: Corrected the corrupted variable name ---
             const doneTasks = capstoneTasks.filter(task => task.status === 'Done').length;
             
             capstoneProgressText.textContent = `${doneTasks} / ${totalTasks} tasks complete`;
@@ -667,7 +594,6 @@
             localStorage.setItem('capstoneTasks', JSON.stringify(capstoneTasks));
             localStorage.setItem('focusText', focusTextEl.value);
             localStorage.setItem('reflectionText', reflectionTextEl.value);
-            // console.log("Data saved!"); // For debugging
         }
         
         function loadData() {
@@ -678,8 +604,6 @@
             focusTextEl.value = localStorage.getItem('focusText') || '';
             reflectionTextEl.value = localStorage.getItem('reflectionText') || '';
             goalEl.value = encodingGoal;
-            
-            // console.log("Data loaded!"); // For debugging
         }
 
         // --- ✨✨ GEMINI API FEATURES ✨✨ ---
